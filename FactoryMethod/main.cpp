@@ -56,11 +56,11 @@ public:
 
 int main()
 {
-	auto elf = std::make_unique<CRogue>();
+	auto pElf = std::make_unique<CRogue>();
 	if (true) // If monster
 	{
-		auto weapon = elf->GetWeapon();
-		weapon->Attack();
+		auto pWeapon = pElf->GetWeapon();
+		pWeapon->Attack();
 	}
 	return 0;
 }
