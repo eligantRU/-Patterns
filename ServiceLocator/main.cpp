@@ -59,16 +59,15 @@ private:
 
 int main()
 {
-	auto solver1 = std::make_shared<CSolver1>();
-	auto solver2 = std::make_shared<CSolver2>();
-
 	auto & instance = CServiceLocator::GetInstance();
 	{
-		instance.SetSolver(solver1);
+		auto solver = std::make_shared<CSolver1>();
+		instance.SetSolver(solver);
 		auto bla = instance.GetSolver()->Solve2(0, 0, 0);
 	}
 	{
-		instance.SetSolver(solver2);
+		auto solver = std::make_shared<CSolver2>();
+		instance.SetSolver(solver);
 		auto bla = instance.GetSolver()->Solve2(0, 0, 0);
 	}
 	return 0;
