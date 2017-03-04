@@ -40,6 +40,7 @@ public:
 class CJuiceFactory
 	:public IJuiceFactory
 {
+public:
 	std::unique_ptr<IJuice> GetAppleJuice() const
 	{
 		return std::make_unique<CJuice>(IJuice::JuiceType::Apple);
