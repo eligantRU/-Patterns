@@ -41,12 +41,12 @@ class CJuiceFactory
 	:public IJuiceFactory
 {
 public:
-	std::unique_ptr<IJuice> GetAppleJuice() const
+	std::unique_ptr<IJuice> GetAppleJuice() const override
 	{
 		return std::make_unique<CJuice>(IJuice::JuiceType::Apple);
 	}
 
-	std::unique_ptr<IJuice> GetBananaJuice() const
+	std::unique_ptr<IJuice> GetBananaJuice() const override
 	{
 		return std::make_unique<CJuice>(IJuice::JuiceType::Banana);
 	}

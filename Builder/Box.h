@@ -14,15 +14,15 @@ class CBox
 	:public IBox
 {
 public:
-	void SetJuice(std::unique_ptr<IJuice> juice)
+	void SetJuice(std::unique_ptr<IJuice> juice) override
 	{
-		m_juice = std::move(juice);
+		m_pJuice = std::move(juice);
 	}
 
 	// void SetLogo(ILogo & logo);
 
 private:
-	std::unique_ptr<IJuice> m_juice = nullptr;
+	std::unique_ptr<IJuice> m_pJuice = nullptr;
 };
 
 class IBoxFactory
@@ -36,7 +36,7 @@ class CBoxFactory
 	:public IBoxFactory
 {
 public:
-	std::unique_ptr<IBox> GetBox() const
+	std::unique_ptr<IBox> GetBox() const override
 	{
 		return std::make_unique<CBox>();
 	}

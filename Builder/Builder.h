@@ -6,41 +6,58 @@
 #include "Juice.h"
 #include "Box.h"
 
-class IBuilder
+class IJuiceBoxBuilder
 {
 public:
-	virtual ~IBuilder() = default;
-	virtual std::unique_ptr<IBox> BuildJuiceBox(IJuice::JuiceType) const = 0;
+	virtual ~IJuiceBoxBuilder() = default;
+
+	virtual std::unique_ptr<IBox> GetJuiceBox() = 0;
+
+	virtual void BuildJuice() = 0;
+	virtual void BuildBox(/*ILogo & logo*/) = 0;
 
 private:
 };
 
-class CBuilder
-	:public IBuilder
+class CJuiceBoxBuilder
+	:public IJuiceBoxBuilder
 {
 public:
-	std::unique_ptr<IBox> BuildJuiceBox(IJuice::JuiceType type) const
+	void BuildBox(/*ILogo & logo*/) override
 	{
-		auto box = m_boxFactory.GetBox();
-		// box.SetLogo(DEFAULT_LOGO);
-
-		std::unique_ptr<IJuice> juice;
-		switch (type)
-		{
-		case IJuice::JuiceType::Apple:
-			juice = m_juiceFactory.GetAppleJuice();
-			break;
-		case IJuice::JuiceType::Banana:
-			juice = m_juiceFactory.GetBananaJuice();
-			break;
-		default:
-			throw std::exception("Unsupported juice type");
-		}
-		box->SetJuice(std::move(juice));
-		return box;
+		m_pBox = std::move(m_boxFactory.GetBox());
+		// m_box.SetLogo(logo);
+	}
+	
+	std::unique_ptr<IBox> GetJuiceBox() override
+	{
+		return std::move(m_pBox);
 	}
 
-private:
+protected:
 	CJuiceFactory m_juiceFactory;
 	CBoxFactory m_boxFactory;
+	std::unique_ptr<IBox> m_pBox = nullptr;
+};
+
+class CAppleJuiceBoxBuilder
+	:public CJuiceBoxBuilder
+{
+public:
+	void BuildJuice() override
+	{
+		auto juice = m_juiceFactory.GetAppleJuice();
+		m_pBox->SetJuice(std::move(juice));
+	}
+};
+
+class CBananaJuiceBoxBuilder
+	:public CJuiceBoxBuilder
+{
+public:
+	void BuildJuice() override
+	{
+		auto juice = m_juiceFactory.GetBananaJuice();
+		m_pBox->SetJuice(std::move(juice));
+	}
 };
