@@ -15,7 +15,7 @@ public:
 	std::tuple<float, float> Solve2(float a, float b, float c) const override
 	{
 		std::cout << "Solver1" << std::endl;
-		return { 0.f, 0.f };
+		return { 0, 0 };
 	}
 };
 
@@ -26,7 +26,7 @@ public:
 	std::tuple<float, float> Solve2(float a, float b, float c) const override
 	{
 		std::cout << "Solver2" << std::endl;
-		return { 0.f, 0.f };
+		return { 0, 0 };
 	}
 };
 
@@ -63,12 +63,12 @@ int main()
 	{
 		auto solver = std::make_shared<CSolver1>();
 		instance.SetSolver(solver);
-		auto bla = instance.GetSolver()->Solve2(0, 0, 0);
+		auto bla = instance.GetSolver()->Solve2(1, 0, 0);
 	}
 	{
 		auto solver = std::make_shared<CSolver2>();
 		instance.SetSolver(solver);
-		auto bla = instance.GetSolver()->Solve2(0, 0, 0);
+		auto bla = instance.GetSolver()->Solve2(1, 0, 0);
 	}
 	return 0;
 }
