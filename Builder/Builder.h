@@ -14,7 +14,7 @@ public:
 	virtual std::unique_ptr<IBox> GetJuiceBox() = 0;
 
 	virtual void BuildJuice() = 0;
-	virtual void BuildBox(/*ILogo & logo*/) = 0;
+	virtual void BuildBox(/*const ILogo & logo*/) = 0;
 
 private:
 };
@@ -23,7 +23,7 @@ class CJuiceBoxBuilder
 	:public IJuiceBoxBuilder
 {
 public:
-	void BuildBox(/*ILogo & logo*/) override
+	void BuildBox(/*const ILogo & logo*/) override
 	{
 		m_pBox = std::move(m_boxFactory.GetBox());
 		// m_box.SetLogo(logo);

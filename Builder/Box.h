@@ -19,7 +19,7 @@ public:
 		m_pJuice = std::move(juice);
 	}
 
-	// void SetLogo(ILogo & logo);
+	// void SetLogo(const ILogo & logo);
 
 private:
 	std::unique_ptr<IJuice> m_pJuice = nullptr;
