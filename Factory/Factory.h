@@ -32,7 +32,7 @@ private:
 class IJuiceFactory
 {
 public:
-	~IJuiceFactory() = default;
+	virtual ~IJuiceFactory() = default;
 	virtual std::unique_ptr<IJuice> GetAppleJuice() const = 0;
 	virtual std::unique_ptr<IJuice> GetBananaJuice() const = 0;
 };

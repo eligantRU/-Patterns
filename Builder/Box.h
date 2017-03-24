@@ -8,6 +8,8 @@ public:
 	virtual ~IBox() = default;
 
 	virtual void SetJuice(std::unique_ptr<IJuice> juice) = 0;
+
+	// virtual void SetLogo(const ILogo & logo) = 0;
 };
 
 class CBox
@@ -19,8 +21,6 @@ public:
 		m_pJuice = std::move(juice);
 	}
 
-	// void SetLogo(const ILogo & logo);
-
 private:
 	std::unique_ptr<IJuice> m_pJuice = nullptr;
 };
@@ -28,7 +28,7 @@ private:
 class IBoxFactory
 {
 public:
-	~IBoxFactory() = default;
+	virtual ~IBoxFactory() = default;
 	virtual std::unique_ptr<IBox> GetBox() const = 0;
 };
 

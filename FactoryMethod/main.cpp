@@ -1,66 +1,79 @@
 #include "stdafx.h"
 
-class IWeapon
+class IJuice
 {
 public:
-	virtual ~IWeapon() = default;
-	virtual void Attack() = 0;
+	virtual ~IJuice() = default;
+
+	enum class JuiceType
+	{
+		Apple,
+		Banana
+	};
 };
 
-class CSword
-	:public IWeapon
+class CJuice
+	:public IJuice
 {
 public:
-	void Attack() override
+	CJuice() = delete;
+	CJuice(JuiceType type)
+		:m_type(type)
 	{
-		std::puts("Slash!");
+
+	}
+
+private:
+	JuiceType m_type;
+};
+
+typedef CJuice CRussianJuice;
+
+class IJuiceStore
+{
+public:
+	virtual ~IJuiceStore() = default;
+	virtual std::unique_ptr<IJuice> OrderJuice(IJuice::JuiceType) const = 0;
+};
+
+class CJuiceStore
+	:public IJuiceStore
+{
+public:
+	std::unique_ptr<IJuice> OrderJuice(IJuice::JuiceType type) const override
+	{
+		return CreateJuice(type);
+	}
+protected:
+	virtual std::unique_ptr<IJuice> CreateJuice(IJuice::JuiceType) const = 0;
+};
+
+class CRussianJuiceStore
+	:public CJuiceStore
+{
+protected:
+	std::unique_ptr<IJuice> CreateJuice(IJuice::JuiceType type) const override
+	{
+		switch (type)
+		{
+		case IJuice::JuiceType::Apple:
+			return std::make_unique<CRussianJuice>(IJuice::JuiceType::Apple);
+		case IJuice::JuiceType::Banana:
+			return std::make_unique<CRussianJuice>(IJuice::JuiceType::Banana);
+		default:
+			throw std::exception("Unsupported juice type");
+		}
 	}
 };
 
-class CBow
-	:public IWeapon
+void OrderJuiceWithFactoryMethod(const IJuiceStore & store)
 {
-public:
-	void Attack() override
-	{
-		std::puts("Pew!");
-	}
-};
-
-class IHero
-{
-public:
-	virtual ~IHero() = default;
-	virtual std::unique_ptr<IWeapon> GetWeapon() = 0;
-};
-
-class CKnight
-	:public IHero
-{
-public:
-	std::unique_ptr<IWeapon> GetWeapon() override
-	{
-		return std::make_unique<CSword>();
-	}
-};
-
-class CRogue
-	:public IHero
-{
-public:
-	std::unique_ptr<IWeapon> GetWeapon() override
-	{
-		return std::make_unique<CBow>();
-	}
-};
+	auto juice = store.OrderJuice(IJuice::JuiceType::Apple);
+}
 
 int main()
 {
-	auto pElf = std::make_unique<CRogue>();
-	if (true) // If monster
-	{
-		auto pWeapon = pElf->GetWeapon();
-		pWeapon->Attack();
-	}
+	CRussianJuiceStore store;
+	OrderJuiceWithFactoryMethod(store);
 	return 0;
 }
