@@ -5,21 +5,19 @@
 
 int main()
 {
-	{
-		CJuiceBoxDirector director;
-		auto bananaJuiceBoxBuilder =
-			std::make_shared<CBananaJuiceBoxBuilder>();
-		auto appleJuiceBoxBuilder =
-			std::make_shared<CAppleJuiceBoxBuilder>();
+	CEmailDirector director;
+	auto yandexEmailBuilder =
+		std::make_shared<CYandexEmailBuilder>();
+	auto bingEmailBuilder =
+		std::make_shared<CBingEmailBuilder>();
 
-		director.SetBuilder(bananaJuiceBoxBuilder);
-		director.ConstructJuiceBox();
-		auto juiceBox1 = director.GetJuiceBox();
+	director.SetBuilder(yandexEmailBuilder);
+	director.ConstructEmail("ElIganT.Ru");
+	std::cout << director.GetEmail() << std::endl;
 
-		director.SetBuilder(appleJuiceBoxBuilder);
-		director.ConstructJuiceBox();
-		auto juiceBox2 = director.GetJuiceBox();
-	}
+	director.SetBuilder(bingEmailBuilder);
+	director.ConstructEmail("ElIganT.Ru");
+	std::cout << director.GetEmail() << std::endl;
 
 	return 0;
 }

@@ -1,63 +1,62 @@
 #pragma once
 
-#include <memory>
-#include <exception>
+#include <boost/algorithm/string.hpp>
 
-#include "Juice.h"
-#include "Box.h"
+static const auto YANDEX_DOMEN_NAME = "yandex.ru";
+static const auto BING_DOMEN_NAME = "bing.com";
 
-class IJuiceBoxBuilder
+std::string ToLower(const std::string & str)
+{
+	auto clone(str);
+	boost::to_lower(clone);
+	return clone;
+}
+
+class IEmailBuilder
 {
 public:
-	virtual ~IJuiceBoxBuilder() = default;
+	virtual ~IEmailBuilder() = default;
 
-	virtual std::unique_ptr<IBox> GetJuiceBox() = 0;
-
-	virtual void BuildJuice() = 0;
-	virtual void BuildBox(/*const ILogo & logo*/) = 0;
-
-private:
+	virtual std::string GetEmail() = 0;
+	virtual void BuildLogin(const std::string &) = 0;
+	virtual void BuildDomenName() = 0;
 };
 
-class CJuiceBoxBuilder
-	:public IJuiceBoxBuilder
+class CEmailBuilder
+	:public IEmailBuilder
 {
-public:
-	void BuildBox(/*const ILogo & logo*/) override
+public:	
+	std::string GetEmail() override
 	{
-		m_pBox = std::move(m_boxFactory.GetBox());
-		// m_box.SetLogo(logo);
+		return (m_login + "@" + m_domenName);
 	}
-	
-	std::unique_ptr<IBox> GetJuiceBox() override
+
+	void BuildLogin(const std::string & login) override
 	{
-		return std::move(m_pBox);
+		m_login = ToLower(login);
 	}
 
 protected:
-	CJuiceFactory m_juiceFactory;
-	CBoxFactory m_boxFactory;
-	std::unique_ptr<IBox> m_pBox = nullptr;
+	std::string m_login;
+	std::string m_domenName;
 };
 
-class CAppleJuiceBoxBuilder
-	:public CJuiceBoxBuilder
+class CYandexEmailBuilder
+	:public CEmailBuilder
 {
 public:
-	void BuildJuice() override
+	void BuildDomenName() override
 	{
-		auto juice = m_juiceFactory.GetAppleJuice();
-		m_pBox->SetJuice(std::move(juice));
+		m_domenName = ToLower(YANDEX_DOMEN_NAME);
 	}
 };
 
-class CBananaJuiceBoxBuilder
-	:public CJuiceBoxBuilder
+class CBingEmailBuilder
+	:public CEmailBuilder
 {
 public:
-	void BuildJuice() override
+	void BuildDomenName() override
 	{
-		auto juice = m_juiceFactory.GetBananaJuice();
-		m_pBox->SetJuice(std::move(juice));
+		m_domenName = ToLower(BING_DOMEN_NAME);
 	}
 };

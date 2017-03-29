@@ -1,28 +1,30 @@
 #pragma once
 
+#include <memory>
+
 #include "Builder.h"
 
-class CJuiceBoxDirector
+class CEmailDirector
 {
 public:
-	CJuiceBoxDirector() = default;
+	CEmailDirector() = default;
 
-	void ConstructJuiceBox()
+	void ConstructEmail(const std::string & login)
 	{
-		m_pBuilder->BuildBox();
-		m_pBuilder->BuildJuice();
+		m_pBuilder->BuildLogin(login);
+		m_pBuilder->BuildDomenName();
 	}
 
-	void SetBuilder(std::shared_ptr<IJuiceBoxBuilder> builder)
+	void SetBuilder(std::shared_ptr<IEmailBuilder> builder)
 	{
 		m_pBuilder = builder;
 	}
 
-	std::unique_ptr<IBox> GetJuiceBox()
+	std::string GetEmail()
 	{
-		return m_pBuilder->GetJuiceBox();
+		return m_pBuilder->GetEmail();
 	}
 
 private:
-	std::shared_ptr<IJuiceBoxBuilder> m_pBuilder = nullptr;
+	std::shared_ptr<IEmailBuilder> m_pBuilder = nullptr;
 };
